@@ -1,9 +1,9 @@
-import { produce } from "immer"
 import { IndicatorShowOpts } from "@/contentScript/isolated/utils/Indicator"
 import { hashWithStoredSalt } from "@/utils/hash"
+import { produce } from "@/utils/helper"
 import type { MediaEvent, MediaEventCinema } from "../../contentScript/isolated/utils/applyMediaEvent"
 import { FlatMediaInfo } from "../../contentScript/isolated/utils/genMediaInfo"
-import { getDefaultAudioFx, getDefaultFx } from "../../defaults"
+import { getDefaultFx } from "../../defaults"
 import { commandInfos, CommandName } from "../../defaults/commands"
 import { filterInfos } from "../../defaults/filters"
 import {
@@ -574,7 +574,7 @@ const commandHandlers: {
 
 		const captured = await isTabCaptured(tabInfo.tabId)
 		captured ? releaseTabCapture(tabInfo.tabId) : initTabCapture(tabInfo.tabId)
-		override.audioFx = getDefaultAudioFx()
+		override.audioFx = null
 		override.audioFxAlt = override.audioPan = null
 		show({ icons: ["reset"] })
 	},

@@ -1,11 +1,10 @@
-import { produce } from "immer"
 import { GoX } from "react-icons/go"
 import { NumericInput } from "@/comps/NumericInput"
 import { RegularTooltip } from "@/comps/RegularTooltip"
 import { SliderMicro } from "@/comps/SliderMicro"
 import { Toggle } from "@/comps/Toggle"
 import { MAX_SPEED_CHROMIUM, MIN_SPEED_CHROMIUM } from "@/defaults/constants"
-import { randomId } from "@/utils/helper"
+import { produce, randomId } from "@/utils/helper"
 import { ModalBase } from "../comps/ModalBase"
 import { useStateView } from "../hooks/useStateView"
 import "./WidgetModal.css"
@@ -82,34 +81,6 @@ export function WidgetModal(props: Props) {
 					/>
 				</div>
 
-				{/* Show indicator */}
-				<div className="field indentFloat">
-					<div className="labelWithTooltip">
-						<span>{gvar.gsm.options.flags.showIndicator}</span>
-						<RegularTooltip title={gvar.gsm.options.flags.showIndicatorTooltip} align="right" />
-					</div>
-					<div className="fieldValue">
-						<Toggle
-							value={!init.hideIndicator}
-							onChange={async (e) => {
-								setView({
-									circleInit: produce(init, (d) => {
-										d.hideIndicator = !d.hideIndicator
-									d.key = randomId()
-									}),
-								})
-							}}
-						/>
-						<div className="float">
-							{init.hideIndicator ? null : (
-								<>
-									<GearIcon onClick={() => setShowIndicatorModal(true)} />
-								</>
-							)}
-						</div>
-					</div>
-				</div>
-
 				{/* Auto hide */}
 				<div className="field">
 					<span>{gvar.gsm.options.flags.widget.autoHide}</span>
@@ -143,6 +114,31 @@ export function WidgetModal(props: Props) {
 							})
 						}}
 					/>
+				</div>
+
+				{/* Show indicator */}
+				<div className="field indentFloat">
+					<span>{gvar.gsm.options.flags.showIndicator}</span>
+					<div className="fieldValue">
+						<Toggle
+							value={!init.hideIndicator}
+							onChange={async (e) => {
+								setView({
+									circleInit: produce(init, (d) => {
+										d.hideIndicator = !d.hideIndicator
+										d.key = randomId()
+									}),
+								})
+							}}
+						/>
+						<div className="float">
+							{init.hideIndicator ? null : (
+								<>
+									<GearIcon onClick={() => setShowIndicatorModal(true)} />
+								</>
+							)}
+						</div>
+					</div>
 				</div>
 
 				{/* Press action */}
