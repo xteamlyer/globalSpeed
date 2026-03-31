@@ -4,6 +4,7 @@
 	"_scale": 1,
 	"_lang": "en",
 	"_rtl": false,
+	"_shortcut_screenshot": true,
 	"audio": {
 		"releaseTab": "Release audio",
 		"split": "Split",
@@ -286,7 +287,9 @@
 			"header": "Shortcut Editor",
 			"headerMobile": "Keyboard Shortcuts",
 			"pageShortcuts": "Page Shortcuts",
-			"pageShortcutsSub": "To disable shortcuts on a site, click the three-dot menu in Global Speed's popup",
+			"shortcutWarningAllow": "By default, shortcuts are disabled on most websites.",
+			"shortcutWarningBlock": "By default, shortcuts are enabled on most websites.",
+			"shortcutWarningLearn": "Learn to toggle shortcuts for a website.",
 			"browserShortcuts": "Browser Shortcuts",
 			"browserShortcutsSub": "Can be used to control videos in background tabs or even while using another app",
 			"menuShortcuts": "Menu Shortcuts",

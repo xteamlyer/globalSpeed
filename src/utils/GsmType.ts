@@ -3,6 +3,7 @@ export type Gsm = {
   _scale?: number,
   _lang?: string,
   _rtl?: boolean,
+  _shortcut_screenshot?: boolean,
   audio: {
     releaseTab: string,
     split: string,
@@ -285,7 +286,9 @@ export type Gsm = {
       header: string,
       headerMobile: string,
       pageShortcuts: string,
-      pageShortcutsSub: string,
+      shortcutWarningAllow: string,
+      shortcutWarningBlock: string,
+      shortcutWarningLearn: string,
       browserShortcuts: string,
       browserShortcutsSub: string,
       menuShortcuts: string,

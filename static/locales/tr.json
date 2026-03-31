@@ -1,6 +1,7 @@
 {
 	":appName": "Global Speed: Video hız kontrolü",
 	":appDesc": "Video ve ses için evrensel hız kontrolü.",
+	"_shortcut_screenshot": true,
 	"audio": {
 		"releaseTab": "Sesi bırak",
 		"split": "Ayır",
@@ -283,7 +284,9 @@
 			"header": "Kısayol Düzenleyici",
 			"headerMobile": "Klavye Kısayolları",
 			"pageShortcuts": "Sayfa Kısayolları",
-			"pageShortcutsSub": "Bir sitede kısayolları devre dışı bırakmak için Global Speed açılır penceresindeki üç nokta menüsüne tıklayın",
+			"shortcutWarningAllow": "Varsayılan olarak, çoğu web sitesinde kısayollar devre dışıdır.",
+			"shortcutWarningBlock": "Varsayılan olarak, çoğu web sitesinde kısayollar etkindir.",
+			"shortcutWarningLearn": "Bir web sitesi için kısayolları açmayı veya kapatmayı öğrenin.",
 			"browserShortcuts": "Tarayıcı Kısayolları",
 			"browserShortcutsSub": "Arka plan sekmelerindeki videoları veya başka bir uygulama kullanırken bile kontrol etmek için kullanılabilir",
 			"menuShortcuts": "Menü Kısayolları",

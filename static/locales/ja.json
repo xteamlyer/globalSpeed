@@ -1,6 +1,7 @@
 {
 	":appName": "Global Speed: ビデオ速度制御",
 	":appDesc": "すべてのウェブサイトで動画と音声の再生速度を制御します。",
+	"_shortcut_screenshot": true,
 	"audio": {
 		"releaseTab": "音声を解放",
 		"split": "分割",
@@ -282,7 +283,9 @@
 			"header": "ショートカットエディター",
 			"headerMobile": "キーボードショートカット",
 			"pageShortcuts": "ページショートカット",
-			"pageShortcutsSub": "サイトでショートカットを無効にするには、Global Speed のポップアップで三点メニューをクリックします",
+			"shortcutWarningAllow": "デフォルトでは、ほとんどのウェブサイトでショートカットは無効になっています。",
+			"shortcutWarningBlock": "デフォルトでは、ほとんどのウェブサイトでショートカットは有効になっています。",
+			"shortcutWarningLearn": "ウェブサイトのショートカットを切り替える方法を見る。",
 			"browserShortcuts": "ブラウザショートカット",
 			"browserShortcutsSub": "バックグラウンドのタブで動画を操作したり、別のアプリ使用中でも操作できます",
 			"menuShortcuts": "メニューショートカット",

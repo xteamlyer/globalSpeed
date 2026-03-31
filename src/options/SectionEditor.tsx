@@ -13,7 +13,7 @@ import { List } from "./List"
 import { ListItem } from "./ListItem"
 import { URLModal } from "./URLModal"
 import "./SectionEditor.css"
-import { Tooltip } from "@/comps/Tooltip"
+import { ShortcutWarning } from "./ShortcutWarning"
 
 type ListKey = "pageKeybinds" | "browserKeybinds" | "menuKeybinds"
 
@@ -25,7 +25,6 @@ export function SectionEditor(props: {}) {
 		keybindsUrlCondition: true,
 		hideIndicator: true,
 		virtualInput: true,
-		freshKeybinds: true,
 	})
 	const allKeybinds = view ? [...(view.pageKeybinds || []), ...(view.browserKeybinds || []), ...(view.menuKeybinds || [])] : []
 	const devWarningType = useDevWarningType(allKeybinds.some((kb) => kb.enabled && kb.command === "runCode"))
@@ -33,10 +32,11 @@ export function SectionEditor(props: {}) {
 	useEffect(() => {
 		if (!view) return
 		localizeMenuShortcutLabels(view, setView)
-	}, [view?.pageKeybinds])
+	}, [view?.menuKeybinds])
 
 	if (!view) return <div></div>
 
+	view.keybindsUrlCondition
 	return (
 		<>
 			<KeybindSection listKey="pageKeybinds" view={view} setView={setView} showUrlConditions devWarningType={devWarningType} />
@@ -67,7 +67,7 @@ function getSectionTitle(listKey: ListKey): string {
 
 function getSectionSubheader(listKey: ListKey): string {
 	const subs: Record<ListKey, string> = {
-		pageKeybinds: (gvar.gsm.options.editor as any).pageShortcutsSub,
+		pageKeybinds: null,
 		browserKeybinds: gvar.gsm.options.editor.browserShortcutsSub,
 		menuKeybinds: gvar.gsm.options.editor.menuShortcutsSub,
 	}
@@ -96,6 +96,7 @@ function KeybindSection(props: {
 		<div className="section SectionEditor">
 			<h2>{getSectionTitle(listKey)}</h2>
 			{!!getSectionSubheader(listKey) && <div className="subHeader">{getSectionSubheader(listKey)}</div>}
+			{listKey === "pageKeybinds" && <ShortcutWarning isBlockMode={(view.keybindsUrlCondition || getDefaultURLCondition(true)).block} />}
 			{devWarningType ? <DevWarning warningType={hasJs ? devWarningType : DevWarningType.NONE} /> : null}
 			{listKey === "browserKeybinds" && <CommandWarning keybinds={view[listKey] || []} />}
 
@@ -279,7 +280,6 @@ function SectionControls(props: { listKey: ListKey; view: StateView; setView: Se
 					const updates: Partial<StateView> = {
 						[listKey]: SECTION_DEFAULTS[listKey](),
 					}
-					if (listKey === "menuKeybinds") updates.freshKeybinds = true
 					setView(updates as StateView)
 				}}
 			>
@@ -294,7 +294,7 @@ function SectionControls(props: { listKey: ListKey; view: StateView; setView: Se
 					{show && (
 						<URLModal
 							context="keybinds"
-							value={view.keybindsUrlCondition || getDefaultURLCondition(true)}
+							value={view.keybindsUrlCondition || getDefaultURLCondition(false)}
 							onClose={() => setShow(false)}
 							onReset={() => setView({ keybindsUrlCondition: null })}
 							onChange={(v) => {
