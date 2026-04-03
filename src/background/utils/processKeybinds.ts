@@ -13,6 +13,7 @@ import {
 	ItcInit,
 	Keybind,
 	KeybindMatch,
+	KeybindType,
 	MediaProbe,
 	ReferenceValues,
 	StateView,
@@ -40,6 +41,7 @@ export class ProcessKeybinds {
 	constructor(
 		private matches: KeybindMatch[],
 		public tabInfo: TabInfo,
+		public source: KeybindType,
 	) {
 		this.init()
 	}
@@ -282,10 +284,10 @@ const commandHandlers: {
 	speed: async (args) => {
 		return processAdjustMode(args)
 	},
-	temporarySpeed: async ({ media, show, kb, commandInfo }) => {
+	temporarySpeed: async ({ media, show, kb, commandInfo, source }) => {
 		const factor = round(kb.valueNumber || commandInfo.ref.default, 2)
 		show({ text: `${factor}x` })
-		activateTemporarySpeed(media, factor)
+		activateTemporarySpeed(media, factor, source)
 	},
 	speedChangesPitch: async (args) => {
 		const { kb, show, override, fetch } = args
@@ -950,7 +952,9 @@ function showIndicator(opts: IndicatorShowOpts, tabId: number, showAlt?: boolean
 }
 
 let tempSpeedTimeoutId: number
-function activateTemporarySpeed(media: FlatMediaInfo, factor: number) {
+let mediaSped: FlatMediaInfo
+function activateTemporarySpeed(media: FlatMediaInfo, factor: number, kbType?: KeybindType) {
+	console.log("SPEEDING")
 	chrome.tabs.sendMessage(
 		media.tabInfo.tabId,
 		{
@@ -959,15 +963,31 @@ function activateTemporarySpeed(media: FlatMediaInfo, factor: number) {
 		} as Messages,
 		{ frameId: media.tabInfo.frameId },
 	)
+	if (mediaSped && mediaSped.key !== media?.key) {
+		releaseTemporarySpeed(mediaSped)
+	}
+	mediaSped = media
 	clearTimeout(tempSpeedTimeoutId)
+	KeepAlive.start(2)
 
-	tempSpeedTimeoutId = setTimeout(() => {
-		chrome.tabs.sendMessage(
-			media.tabInfo.tabId,
-			{
-				type: "SET_TEMPORARY_SPEED",
-			} as Messages,
-			{ frameId: media.tabInfo.frameId },
-		)
-	}, 150)
+	tempSpeedTimeoutId = setTimeout(
+		() => {
+			releaseTemporarySpeed(media)
+		},
+		kbType === "pageKeybinds" ? 500 : 225,
+	)
+}
+
+export function releaseTemporarySpeed(media?: FlatMediaInfo) {
+	console.log("RELEASING")
+	media = media || mediaSped
+	if (!media) return
+	chrome.tabs.sendMessage(
+		media.tabInfo.tabId,
+		{
+			type: "SET_TEMPORARY_SPEED",
+		} as Messages,
+		{ frameId: media.tabInfo.frameId },
+	)
+	mediaSped = null
 }

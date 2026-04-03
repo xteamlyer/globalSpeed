@@ -228,6 +228,9 @@ export type Command = {
 	hasFeedback?: boolean
 	requiresMedia?: boolean
 	requiresVideo?: boolean
+	prohibitAsMenu?: boolean
+	prohibitAsPage?: boolean
+	prohibitAsCommands?: boolean
 	requiresTabCapture?: boolean
 	requiresPiPApi?: boolean
 	noReset?: boolean
@@ -501,3 +504,5 @@ export type MatrixTemplate = {
 	id: string
 	values: number[] // [R1, R2, R3, RB, G1, G2, G3, GB, B1, B2, B3, BB]
 }
+
+export type KeybindType = "pageKeybinds" | "browserKeybinds" | "menuKeybinds"

@@ -27,6 +27,7 @@ const ghostModeStatic = [
 export class ConfigSync {
 	released = false
 	blockKeyUp = false
+	justRanTemporarySpeed = false
 	lastTrigger = 0
 	fxSync: FxSync
 	urlConditionsClient = new SubscribeView(
@@ -207,6 +208,12 @@ export class ConfigSync {
 			e.stopImmediatePropagation()
 			e.preventDefault()
 		}
+
+		if (this.justRanTemporarySpeed) {
+			console.log(e.code, e.key, e.shiftKey)
+			this.justRanTemporarySpeed = false
+			chrome.runtime.sendMessage({ type: "RELEASED_TEMPORARY_SPEED" })
+		}
 	}
 	handleKeyDown = (e: KeyboardEvent) => {
 		if (document.activeElement?.tagName === "IFRAME") return
@@ -268,6 +275,10 @@ export class ConfigSync {
 					.filter((match) => match.kb.adjustMode === AdjustMode.ITC || match.kb.adjustMode === AdjustMode.ITC_REL)
 					.forEach((v) => this.ignoreList.add(v.kb.id))
 				chrome.runtime.sendMessage({ type: "TRIGGER_KEYBINDS", ids: matches.map((match) => ({ id: match.kb.id, alt: match.alt })) })
+
+				if (matches.some((match) => match.kb.command === "temporarySpeed")) {
+					this.justRanTemporarySpeed = true
+				}
 			}
 		}
 	}

@@ -4,7 +4,7 @@ import { produce } from "@/utils/helper"
 import { getDefaultURLCondition } from "../defaults"
 import { availableCommandNames, commandInfos, CommandName, getDefaultMenuKeybinds, getDefaultPageKeybinds } from "../defaults/commands"
 import { SetView, useStateView } from "../hooks/useStateView"
-import { CommandGroup, Keybind, StateView, Trigger } from "../types"
+import { CommandGroup, Keybind, KeybindType, StateView, Trigger } from "../types"
 import { areYouSure, isFirefox, isMobile, moveItem, randomId, walkGetKey } from "../utils/helper"
 import { CommandWarning } from "./CommandWarning"
 import { DevWarning, DevWarningType, useDevWarningType } from "./DevWarning"
@@ -14,8 +14,6 @@ import { ListItem } from "./ListItem"
 import { URLModal } from "./URLModal"
 import "./SectionEditor.css"
 import { ShortcutWarning } from "./ShortcutWarning"
-
-type ListKey = "pageKeybinds" | "browserKeybinds" | "menuKeybinds"
 
 export function SectionEditor(props: {}) {
 	const [view, setView] = useStateView({
@@ -32,7 +30,7 @@ export function SectionEditor(props: {}) {
 	useEffect(() => {
 		if (!view) return
 		localizeMenuShortcutLabels(view, setView)
-	}, [view?.menuKeybinds])
+	}, [view?.menuKeybinds, gvar.gsm._lang])
 
 	if (!view) return <div></div>
 
@@ -50,14 +48,14 @@ export function SectionEditor(props: {}) {
 	)
 }
 
-const SECTION_TRIGGER: Record<ListKey, Trigger> = {
+const SECTION_TRIGGER: Record<KeybindType, Trigger> = {
 	pageKeybinds: Trigger.PAGE,
 	browserKeybinds: Trigger.BROWSER,
 	menuKeybinds: Trigger.MENU,
 }
 
-function getSectionTitle(listKey: ListKey): string {
-	const titles: Record<ListKey, string> = {
+function getSectionTitle(listKey: KeybindType): string {
+	const titles: Record<KeybindType, string> = {
 		pageKeybinds: gvar.gsm.options.editor.pageShortcuts,
 		browserKeybinds: gvar.gsm.options.editor.browserShortcuts,
 		menuKeybinds: gvar.gsm.options.editor.menuShortcuts,
@@ -65,8 +63,8 @@ function getSectionTitle(listKey: ListKey): string {
 	return titles[listKey]
 }
 
-function getSectionSubheader(listKey: ListKey): string {
-	const subs: Record<ListKey, string> = {
+function getSectionSubheader(listKey: KeybindType): string {
+	const subs: Record<KeybindType, string> = {
 		pageKeybinds: null,
 		browserKeybinds: gvar.gsm.options.editor.browserShortcutsSub,
 		menuKeybinds: gvar.gsm.options.editor.menuShortcutsSub,
@@ -74,14 +72,14 @@ function getSectionSubheader(listKey: ListKey): string {
 	return subs[listKey]
 }
 
-const SECTION_DEFAULTS: Record<ListKey, () => Keybind[]> = {
+const SECTION_DEFAULTS: Record<KeybindType, () => Keybind[]> = {
 	pageKeybinds: getDefaultPageKeybinds,
 	browserKeybinds: () => [],
 	menuKeybinds: getDefaultMenuKeybinds,
 }
 
 function KeybindSection(props: {
-	listKey: ListKey
+	listKey: KeybindType
 	view: StateView
 	setView: SetView
 	showUrlConditions?: boolean
@@ -142,7 +140,7 @@ function KeybindSection(props: {
 	)
 }
 
-function onSpacingChange(setView: SetView, view: StateView, listKey: ListKey, idx: number) {
+function onSpacingChange(setView: SetView, view: StateView, listKey: KeybindType, idx: number) {
 	const kb = view[listKey][idx]
 	if (!kb) return
 	onChange(
@@ -156,14 +154,14 @@ function onSpacingChange(setView: SetView, view: StateView, listKey: ListKey, id
 	)
 }
 
-function onRemove(setView: SetView, view: StateView, listKey: ListKey, id: string) {
+function onRemove(setView: SetView, view: StateView, listKey: KeybindType, id: string) {
 	setView({
 		[listKey]: view[listKey].filter((v) => v.id !== id),
 	})
 	if (listKey === "menuKeybinds") requestSyncContextMenu()
 }
 
-function onChange(setView: SetView, view: StateView, listKey: ListKey, id: string, newKb: Keybind) {
+function onChange(setView: SetView, view: StateView, listKey: KeybindType, id: string, newKb: Keybind) {
 	setView({
 		[listKey]: produce(view[listKey], (d) => {
 			const idx = d.findIndex((v) => v.id === id)
@@ -172,7 +170,7 @@ function onChange(setView: SetView, view: StateView, listKey: ListKey, id: strin
 	})
 }
 
-function onDuplicate(setView: SetView, view: StateView, listKey: ListKey, id: string) {
+function onDuplicate(setView: SetView, view: StateView, listKey: KeybindType, id: string) {
 	setView({
 		[listKey]: produce(view[listKey], (d) => {
 			const idx = d.findIndex((kb) => kb.id === id)
@@ -189,7 +187,7 @@ function onDuplicate(setView: SetView, view: StateView, listKey: ListKey, id: st
 	if (listKey === "menuKeybinds") requestSyncContextMenu()
 }
 
-function onMove(setView: SetView, view: StateView, listKey: ListKey, id: string, newIndex: number) {
+function onMove(setView: SetView, view: StateView, listKey: KeybindType, id: string, newIndex: number) {
 	setView({
 		[listKey]: produce(view[listKey], (d) => {
 			const oldIndex = moveItem(d, (v) => v.id === id, newIndex)
@@ -202,40 +200,32 @@ function onMove(setView: SetView, view: StateView, listKey: ListKey, id: string,
 	if (listKey === "menuKeybinds") requestSyncContextMenu()
 }
 
-let cachedOptions: {
-	value: string
-	label: string
-	disabled?: boolean
-}[]
+type CommandOption = { value: string; label: string; disabled?: boolean }
+const cachedOptions: Partial<Record<KeybindType, CommandOption[]>> = {}
 
-let cachedOptionsForPage: typeof cachedOptions
+function getOptions(listKey: KeybindType): CommandOption[] {
+	if (cachedOptions[listKey]) return cachedOptions[listKey]
 
-function getOptions(forPage: boolean) {
-	if (forPage && cachedOptionsForPage) return cachedOptionsForPage
-	if (!forPage && cachedOptions) return cachedOptions
-
-	const cached: typeof cachedOptions = []
-	let previousGroup: { group: CommandGroup }
+	const result: CommandOption[] = []
+	let previousGroup: CommandGroup | undefined
+	let hasItems = false
 	availableCommandNames.forEach((command) => {
-		const info = commandInfos[command as keyof typeof commandInfos]
+		const info = commandInfos[command as CommandName]
 		if (isMobile() && info.disableOnMobile) return
-		if (previousGroup && previousGroup.group !== info.group) {
-			cached.push({ label: "------", value: `${command}_group`, disabled: true })
+		if (listKey === "pageKeybinds" && info.prohibitAsPage) return
+		if (listKey === "menuKeybinds" && info.prohibitAsMenu) return
+		if (hasItems && previousGroup !== info.group) {
+			result.push({ label: "------", value: `${command}_group`, disabled: true })
 		}
-		cached.push({ label: (gvar.gsm.command as any)[command], value: command })
-		previousGroup = { group: info.group }
+		result.push({ label: (gvar.gsm.command as any)[command], value: command })
+		previousGroup = info.group
+		hasItems = true
 	})
-	if (forPage) {
-		const idx = cached.findIndex((v) => v.value === "afxCapture")
-		if (idx >= 0) cached.splice(idx, 1)
-		cachedOptionsForPage = cached
-	} else {
-		cachedOptions = cached
-	}
-	return cached
+	cachedOptions[listKey] = result
+	return result
 }
 
-function SectionControls(props: { listKey: ListKey; view: StateView; setView: SetView; showUrlConditions?: boolean }) {
+function SectionControls(props: { listKey: KeybindType; view: StateView; setView: SetView; showUrlConditions?: boolean }) {
 	const { listKey, view, setView, showUrlConditions } = props
 	const [commandOption, setCommandOption] = useState("speed")
 	const [show, setShow] = useState(false)
@@ -251,7 +241,7 @@ function SectionControls(props: { listKey: ListKey; view: StateView; setView: Se
 					setCommandOption(e.target.value)
 				}}
 			>
-				{getOptions(listKey === "pageKeybinds").map((v) => {
+				{getOptions(listKey).map((v) => {
 					return (
 						<option key={v.value} disabled={v.disabled} value={v.value}>
 							{v.label}
