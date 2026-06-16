@@ -232,7 +232,10 @@
 			"header": "选项",
 			"language": "语言",
 			"_languageTooltip": "对中文翻译做出贡献的用户：@liangjiancang",
-			"darkTheme": "深色主题",
+			"theme": "主题",
+			"themeLight": "浅色",
+			"themeDark": "深色",
+			"themeSystem": "跟随系统",
 			"showBadge": "显示徽章",
 			"showBadgeTooltip": "徽章是扩展图标上的文字",
 			"showMediaView": "显示媒体列表",
@@ -279,7 +282,9 @@
 			"qrCodeTop": "扫码使用",
 			"qrCodeBottom": "Edge 手机版",
 			"holdToSpeedUp": "按住快进",
-			"holdToSpeedUpTooltip": "按住视频可临时加速播放"
+			"holdToSpeedUpTooltip": "按住视频可临时加速播放",
+			"longPressThreshold": "长按时长",
+			"longPressThresholdTooltip": "触发长按快捷键前需按住按键的时长"
 		},
 		"editor": {
 			"header": "快捷键编辑器",
@@ -289,7 +294,7 @@
 			"shortcutWarningBlock": "默认情况下，大多数网站启用快捷键。",
 			"shortcutWarningLearn": "了解如何切换网站快捷键。",
 			"browserShortcuts": "浏览器快捷键",
-			"browserShortcutsSub": "可用于在后台标签页中控制视频，甚至在使用其他应用时也可控制",
+			"browserShortcutsSub": "可在使用其他应用时控制视频",
 			"menuShortcuts": "菜单快捷键",
 			"menuShortcutsSub": "右键点击页面时会显示这些快捷键",
 			"toggleModeTooltip": "全局热键可以让您在使用其他应用程序时控制视频或音频",
@@ -327,6 +332,8 @@
 			},
 			"pressAndHold": "按住",
 			"pressAndHoldTooltip": "如果启用，则在交互调整值时必须按住键",
+			"longPress": "长按",
+			"longPressTooltip": "仅在按键按住较长时间时触发",
 			"keyPickerInput": "点击更改",
 			"keyPickerInputTooltip": "按下新快捷键"
 		},

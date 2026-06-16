@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { GoX } from "react-icons/go"
 import { TfiMoreAlt } from "react-icons/tfi"
 import { GearIcon } from "@/comps/GearIcon"
@@ -9,7 +9,7 @@ import { SliderMicro } from "@/comps/SliderMicro"
 import { Toggle } from "@/comps/Toggle"
 import { Tooltip } from "@/comps/Tooltip"
 import { getDefaultURLCondition } from "@/defaults"
-import { getDefaultSpeedSlider } from "@/defaults/constants"
+import { DEFAULT_LONG_PRESS_THRESHOLD, getDefaultSpeedSlider } from "@/defaults/constants"
 import { Context, CONTEXT_KEYS, InitialContext, StateView } from "@/types"
 import { clamp, isMobile, produce } from "@/utils/helper"
 import { fetchView } from "@/utils/state"
@@ -51,8 +51,12 @@ export function SectionFlags(props: {}) {
 		virtualInput: true,
 		circleWidget: true,
 		holdToSpeed: true,
+		longPressThreshold: true,
+		pageKeybinds: true,
 	})
 	const [viewAlt] = useStateView({ indicatorInit: true, hideIndicator: true })
+	const hasLongPressKey = useMemo(() => (view?.pageKeybinds || []).some((kb) => kb.longPress), [view?.pageKeybinds])
+
 	if (!view || !viewAlt) return <div></div>
 
 	const defaultSlider = getDefaultSpeedSlider()
@@ -107,14 +111,18 @@ export function SectionFlags(props: {}) {
 
 				{/* Dark theme */}
 				<div className="field">
-					<span>{gvar.gsm.options.flags.darkTheme}</span>
-					<Toggle
-						aria-label={gvar.gsm.options.flags.darkTheme}
-						value={!!view.darkTheme}
+					<span>{gvar.gsm.options.flags.theme}</span>
+					<select
+						value={view.darkTheme == null ? "system" : view.darkTheme ? "dark" : "light"}
 						onChange={(e) => {
-							setView({ darkTheme: !view.darkTheme })
+							const val = e.target.value
+							setView({ darkTheme: val === "system" ? null : val === "dark" ? true : false })
 						}}
-					/>
+					>
+						<option value="system">{"Auto"}</option>
+						<option value="light">{gvar.gsm.options.flags.themeLight}</option>
+						<option value="dark">{gvar.gsm.options.flags.themeDark}</option>
+					</select>
 				</div>
 
 				{/* Permission */}
@@ -320,7 +328,11 @@ export function SectionFlags(props: {}) {
 							</Tooltip>
 						</div>
 					) : (
-						<Toggle aria-label={gvar.gsm.options.flags.speedSlider} value={!!view.speedSlider} onChange={(v) => setView({ speedSlider: view.speedSlider ? null : getDefaultSpeedSlider() })} />
+						<Toggle
+							aria-label={gvar.gsm.options.flags.speedSlider}
+							value={!!view.speedSlider}
+							onChange={(v) => setView({ speedSlider: view.speedSlider ? null : getDefaultSpeedSlider() })}
+						/>
 					)}
 				</div>
 
@@ -357,6 +369,26 @@ export function SectionFlags(props: {}) {
 					</Tooltip>
 				) : (
 					<>
+						{/* Long-press threshold */}
+						{!isMobile() && hasLongPressKey && (
+							<div className="field">
+								<div className="labelWithTooltip">
+									<span>{gvar.gsm.options.flags.longPressThreshold}</span>
+									<RegularTooltip title={gvar.gsm.options.flags.longPressThresholdTooltip} align="right" />
+								</div>
+
+								<div className="control">
+									<NumericInput
+										noNull={true}
+										min={100}
+										max={3000}
+										value={view.longPressThreshold ?? DEFAULT_LONG_PRESS_THRESHOLD}
+										onChange={(v) => setView({ longPressThreshold: v })}
+									/>
+								</div>
+							</div>
+						)}
+
 						{!isMobile() && (
 							<>
 								{/* Font size */}

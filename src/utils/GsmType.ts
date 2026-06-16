@@ -233,7 +233,10 @@ export type Gsm = {
       header: string,
       language: string,
       _languageTooltip?: string,
-      darkTheme: string,
+      theme: string,
+      themeLight: string,
+      themeDark: string,
+      themeSystem: string,
       showBadge: string,
       showBadgeTooltip: string,
       showMediaView: string,
@@ -280,7 +283,9 @@ export type Gsm = {
       qrCodeTop: string,
       qrCodeBottom: string,
       holdToSpeedUp: string,
-      holdToSpeedUpTooltip: string
+      holdToSpeedUpTooltip: string,
+      longPressThreshold: string,
+      longPressThresholdTooltip: string
     },
     editor: {
       header: string,
@@ -328,6 +333,8 @@ export type Gsm = {
       },
       pressAndHold: string,
       pressAndHoldTooltip: string,
+      longPress: string,
+      longPressTooltip: string,
       keyPickerInput: string,
       keyPickerInputTooltip: string
     },

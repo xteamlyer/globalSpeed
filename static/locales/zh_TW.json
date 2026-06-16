@@ -231,7 +231,10 @@
 			"header": "選項",
 			"language": "語言",
 			"_languageTooltip": "對繁體中文翻譯做出貢獻的使用者：@PeterDaveHello @nathan60107",
-			"darkTheme": "深色主題",
+			"theme": "主題",
+			"themeLight": "淺色",
+			"themeDark": "深色",
+			"themeSystem": "跟隨系統",
 			"showBadge": "顯示標記",
 			"showBadgeTooltip": "標記是擴充功能圖示上的文字",
 			"showMediaView": "顯示媒體清單",
@@ -278,7 +281,9 @@
 			"qrCodeTop": "掃碼使用",
 			"qrCodeBottom": "Edge 手機版",
 			"holdToSpeedUp": "長按以快轉",
-			"holdToSpeedUpTooltip": "按住影片可暫時加速播放"
+			"holdToSpeedUpTooltip": "按住影片可暫時加速播放",
+			"longPressThreshold": "長按持續時間",
+			"longPressThresholdTooltip": "按住按鍵多久後才會觸發長按快捷鍵"
 		},
 		"editor": {
 			"header": "快捷鍵編輯器",
@@ -288,7 +293,7 @@
 			"shortcutWarningBlock": "預設情況下，大多數網站已啟用快捷鍵。",
 			"shortcutWarningLearn": "了解如何為網站切換快捷鍵。",
 			"browserShortcuts": "瀏覽器快捷鍵",
-			"browserShortcutsSub": "可用於控制背景分頁中的影片，甚至在使用其他應用程式時也能控制",
+			"browserShortcutsSub": "可在使用其他應用程式時控制影片",
 			"menuShortcuts": "選單快捷鍵",
 			"menuShortcutsSub": "當你在頁面上按右鍵時會顯示這些快捷鍵",
 			"toggleModeTooltip": "全域快捷鍵可讓您在使用其他程式時控制影片或音訊",
@@ -326,6 +331,8 @@
 			},
 			"pressAndHold": "按住不放",
 			"pressAndHoldTooltip": "啟用時，互動調整數值時必須按住按鍵",
+			"longPress": "長按",
+			"longPressTooltip": "僅在按鍵按住較長時間時才觸發",
 			"keyPickerInput": "點擊以更改",
 			"keyPickerInputTooltip": "按下新的快捷鍵"
 		},

@@ -231,7 +231,10 @@
 			"header": "옵션",
 			"language": "언어",
 			"_languageTooltip": "한국어 번역에 기여한 사용자: @dev-diver",
-			"darkTheme": "어두운 테마",
+			"theme": "테마",
+			"themeLight": "라이트",
+			"themeDark": "다크",
+			"themeSystem": "시스템",
 			"showBadge": "배지 표시",
 			"showBadgeTooltip": "배지는 확장 프로그램 아이콘의 텍스트입니다",
 			"showMediaView": "미디어 목록 표시",
@@ -278,7 +281,9 @@
 			"qrCodeTop": "스캔하여 사용해 보세요...",
 			"qrCodeBottom": "모바일용 Edge",
 			"holdToSpeedUp": "길게 눌러 빨리 감기",
-			"holdToSpeedUpTooltip": "영상을 길게 누르면 일시적으로 속도가 빨라집니다"
+			"holdToSpeedUpTooltip": "영상을 길게 누르면 일시적으로 속도가 빨라집니다",
+			"longPressThreshold": "길게 누르기 지속 시간",
+			"longPressThresholdTooltip": "길게 누르기 단축키가 실행되기 전 키를 누르고 있을 시간"
 		},
 		"editor": {
 			"header": "단축키 편집기",
@@ -288,7 +293,7 @@
 			"shortcutWarningBlock": "기본적으로 대부분의 웹사이트에서는 단축키가 활성화되어 있습니다.",
 			"shortcutWarningLearn": "웹사이트의 단축키 전환 방법을 알아보세요.",
 			"browserShortcuts": "브라우저 단축키",
-			"browserShortcutsSub": "백그라운드 탭의 동영상을 제어하거나 다른 앱을 사용하는 동안에도 사용할 수 있습니다",
+			"browserShortcutsSub": "다른 앱을 사용하는 동안 동영상을 제어하는 데 사용할 수 있음",
 			"menuShortcuts": "메뉴 단축키",
 			"menuShortcutsSub": "이 단축키는 페이지에서 마우스 오른쪽 버튼을 클릭하면 표시됩니다",
 			"toggleModeTooltip": "전역 단축키는 다른 프로그램을 사용하는 동안 비디오 또는 오디오를 제어하려는 경우에 유용합니다",
@@ -326,6 +331,8 @@
 			},
 			"pressAndHold": "길게 누르기",
 			"pressAndHoldTooltip": "활성화된 경우 값을 인터랙티브하게 조정하는 동안 키를 누르고 있어야 합니다",
+			"longPress": "길게 누르기",
+			"longPressTooltip": "키를 더 오래 누르고 있을 때만 실행",
 			"keyPickerInput": "클릭하여 변경",
 			"keyPickerInputTooltip": "새 바로가기 키를 누르세요"
 		},

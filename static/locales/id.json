@@ -229,7 +229,10 @@
 		"flags": {
 			"header": "Opsi",
 			"language": "Bahasa",
-			"darkTheme": "Tema gelap",
+			"theme": "Tema",
+			"themeLight": "Terang",
+			"themeDark": "Gelap",
+			"themeSystem": "Sistem",
 			"showBadge": "Tampilkan badge",
 			"showBadgeTooltip": "Badge adalah teks pada ikon ekstensi",
 			"showMediaView": "Tampilkan daftar media",
@@ -276,7 +279,9 @@
 			"qrCodeTop": "Pindai untuk digunakan di...",
 			"qrCodeBottom": "Edge untuk seluler",
 			"holdToSpeedUp": "Tekan dan tahan untuk mempercepat",
-			"holdToSpeedUpTooltip": "Tekan dan tahan video untuk mempercepat sementara"
+			"holdToSpeedUpTooltip": "Tekan dan tahan video untuk mempercepat sementara",
+			"longPressThreshold": "Durasi tekan lama",
+			"longPressThresholdTooltip": "Berapa lama tombol ditekan sebelum memicu pintasan tekan lama"
 		},
 		"editor": {
 			"header": "Editor Pintasan",
@@ -286,7 +291,7 @@
 			"shortcutWarningBlock": "Secara default, pintasan diaktifkan di sebagian besar situs web.",
 			"shortcutWarningLearn": "Pelajari cara mengaktifkan atau menonaktifkan pintasan untuk situs web.",
 			"browserShortcuts": "Pintasan Browser",
-			"browserShortcutsSub": "Dapat digunakan untuk mengontrol video di tab latar belakang atau bahkan saat menggunakan aplikasi lain",
+			"browserShortcutsSub": "Dapat digunakan untuk mengontrol video saat menggunakan aplikasi lain",
 			"menuShortcuts": "Pintasan Menu",
 			"menuShortcutsSub": "Pintasan ini ditampilkan saat Anda klik kanan pada halaman",
 			"toggleModeTooltip": "Pintasan global berguna saat Anda ingin mengontrol video atau audio saat menggunakan program lain",
@@ -324,6 +329,8 @@
 			},
 			"pressAndHold": "Tekan dan tahan",
 			"pressAndHoldTooltip": "Jika diaktifkan, tombol harus ditekan dan ditahan saat menyesuaikan nilai secara interaktif",
+			"longPress": "Tekan lama",
+			"longPressTooltip": "Hanya picu saat tombol ditahan lebih lama",
 			"keyPickerInput": "Klik untuk mengubah",
 			"keyPickerInputTooltip": "Tekan pintasan baru"
 		},

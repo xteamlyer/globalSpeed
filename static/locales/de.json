@@ -230,7 +230,10 @@
 			"header": "Optionen",
 			"language": "Sprache",
 			"_languageTooltip": "",
-			"darkTheme": "Dunkles Thema",
+			"theme": "Design",
+			"themeLight": "Hell",
+			"themeDark": "Dunkel",
+			"themeSystem": "System",
 			"showBadge": "Abzeichen anzeigen",
 			"showBadgeTooltip": "Das Abzeichen ist der Text auf dem Erweiterungssymbol",
 			"showMediaView": "Medienliste anzeigen",
@@ -277,7 +280,9 @@
 			"qrCodeTop": "Zum Verwenden auf ... scanne",
 			"qrCodeBottom": "Edge für Mobilgeräte",
 			"holdToSpeedUp": "Zum Vorspulen gedrückt halten",
-			"holdToSpeedUpTooltip": "Gedrückt halten, um Videos vorübergehend zu beschleunigen"
+			"holdToSpeedUpTooltip": "Gedrückt halten, um Videos vorübergehend zu beschleunigen",
+			"longPressThreshold": "Dauer für langes Drücken",
+			"longPressThresholdTooltip": "Wie lange eine Taste gehalten werden muss, bevor Langdruck-Kurzbefehle ausgelöst werden"
 		},
 		"editor": {
 			"header": "Tastenkombinationen-Editor",
@@ -287,7 +292,7 @@
 			"shortcutWarningBlock": "Standardmäßig sind Tastenkürzel auf den meisten Websites aktiviert.",
 			"shortcutWarningLearn": "Erfahren Sie, wie Sie Tastenkürzel für eine Website umschalten.",
 			"browserShortcuts": "Browser-Kurzbefehle",
-			"browserShortcutsSub": "Kann zur Steuerung von Videos in Hintergrund-Tabs oder sogar bei Verwendung einer anderen App genutzt werden",
+			"browserShortcutsSub": "Kann zur Steuerung von Videos verwendet werden, während eine andere App genutzt wird",
 			"menuShortcuts": "Menü-Kurzbefehle",
 			"menuShortcutsSub": "Diese Tastenkürzel werden angezeigt, wenn du auf einer Seite mit der rechten Maustaste klickst",
 			"toggleModeTooltip": "Globale Tastenkombinationen sind nützlich, wenn du Videos oder Audios steuern möchtest, während du ein anderes Programm verwendest",
@@ -325,6 +330,8 @@
 			},
 			"pressAndHold": "Drücken und halten",
 			"pressAndHoldTooltip": "Wenn aktiviert, muss die Taste gedrückt gehalten werden, während der Wert interaktiv angepasst wird",
+			"longPress": "Langes Drücken",
+			"longPressTooltip": "Nur auslösen, wenn die Taste länger gedrückt gehalten wird",
 			"keyPickerInput": "Klicken zum Ändern",
 			"keyPickerInputTooltip": "Neue Tastenkombination drücken"
 		},
