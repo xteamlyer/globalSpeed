@@ -9,7 +9,7 @@ import { SliderMicro } from "@/comps/SliderMicro"
 import { Toggle } from "@/comps/Toggle"
 import { Tooltip } from "@/comps/Tooltip"
 import { getDefaultURLCondition } from "@/defaults"
-import { DEFAULT_LONG_PRESS_THRESHOLD, getDefaultSpeedSlider } from "@/defaults/constants"
+import { DEFAULT_DOUBLE_TAP_THRESHOLD, DEFAULT_LONG_PRESS_THRESHOLD, getDefaultSpeedSlider } from "@/defaults/constants"
 import { Context, CONTEXT_KEYS, InitialContext, StateView } from "@/types"
 import { clamp, isMobile, produce } from "@/utils/helper"
 import { fetchView } from "@/utils/state"
@@ -21,6 +21,7 @@ import { SpeedPresetModal } from "./SpeedPresetModal"
 import { URLModal } from "./URLModal"
 import { WidgetModal } from "./WidgetModal"
 import "./SectionFlags.css"
+import { Reset } from "@/comps/Reset"
 
 export function SectionFlags(props: {}) {
 	const [showIndicatorModal, setShowIndicatorModal] = useState(false)
@@ -52,10 +53,12 @@ export function SectionFlags(props: {}) {
 		circleWidget: true,
 		holdToSpeed: true,
 		longPressThreshold: true,
+		doubleTapThreshold: true,
 		pageKeybinds: true,
 	})
 	const [viewAlt] = useStateView({ indicatorInit: true, hideIndicator: true })
 	const hasLongPressKey = useMemo(() => (view?.pageKeybinds || []).some((kb) => kb.longPress), [view?.pageKeybinds])
+	const hasDoubleTap = useMemo(() => (view?.pageKeybinds || []).some((kb) => kb.doubleTap), [view?.pageKeybinds])
 
 	if (!view || !viewAlt) return <div></div>
 
@@ -377,13 +380,44 @@ export function SectionFlags(props: {}) {
 									<RegularTooltip title={gvar.gsm.options.flags.longPressThresholdTooltip} align="right" />
 								</div>
 
-								<div className="control">
+								<div className="withReset">
 									<NumericInput
 										noNull={true}
-										min={100}
-										max={3000}
-										value={view.longPressThreshold ?? DEFAULT_LONG_PRESS_THRESHOLD}
-										onChange={(v) => setView({ longPressThreshold: v })}
+										min={0.1}
+										max={3}
+										value={(view.longPressThreshold ?? DEFAULT_LONG_PRESS_THRESHOLD) / 1000}
+										onChange={(v) => setView({ longPressThreshold: Math.round(v * 1000) })}
+									/>
+									<Reset
+										active={view.longPressThreshold != undefined}
+										onClick={() => {
+											setView({ longPressThreshold: null })
+										}}
+									/>
+								</div>
+							</div>
+						)}
+
+						{!isMobile() && hasDoubleTap && (
+							<div className="field">
+								<div className="labelWithTooltip">
+									<span>{gvar.gsm.options.flags.doubleTapThreshold}</span>
+									<RegularTooltip title={gvar.gsm.options.flags.doubleTapThresholdTooltip} align="right" />
+								</div>
+
+								<div className="withReset">
+									<NumericInput
+										noNull={true}
+										min={0.06}
+										max={3}
+										value={(view.doubleTapThreshold ?? DEFAULT_DOUBLE_TAP_THRESHOLD) / 1000}
+										onChange={(v) => setView({ doubleTapThreshold: Math.round(v * 1000) })}
+									/>
+									<Reset
+										active={view.doubleTapThreshold != undefined}
+										onClick={() => {
+											setView({ doubleTapThreshold: null })
+										}}
 									/>
 								</div>
 							</div>
